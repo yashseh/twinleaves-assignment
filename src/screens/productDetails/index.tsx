@@ -8,7 +8,7 @@ import {IProduct} from '../../state/slices/products/types';
 import {useSelector} from 'react-redux';
 import {productsFromState} from '../../state/slices/products/productsSlice';
 import {STRINGS} from '../../utils/strings';
-import {colors} from '../../assets/themes';
+import CartWrapper from '../../wrappers/cartWrapper';
 
 const ProductDetails: React.FC<IProductDetailsParams> = ({route}) => {
   const [product, setProduct] = useState<IProduct | null>(null);
@@ -18,6 +18,10 @@ const ProductDetails: React.FC<IProductDetailsParams> = ({route}) => {
   useEffect(() => {
     getCurrentProduct();
   }, [route]);
+
+  console.log('====================================');
+  console.log(route.params.product?.gtin);
+  console.log('====================================');
 
   /**
    * getCurrentProduct - Function to retrieve the product data based on the route parameters.
@@ -45,7 +49,7 @@ const ProductDetails: React.FC<IProductDetailsParams> = ({route}) => {
   };
 
   return (
-    <>
+    <CartWrapper>
       {errorMessage && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorMessage}>{errorMessage}</Text>
@@ -60,7 +64,7 @@ const ProductDetails: React.FC<IProductDetailsParams> = ({route}) => {
           </ScrollView>
         </View>
       )}
-    </>
+    </CartWrapper>
   );
 };
 

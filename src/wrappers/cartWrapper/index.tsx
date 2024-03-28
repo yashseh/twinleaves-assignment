@@ -14,34 +14,47 @@ import {ICONS} from '../../assets/iconExpoter';
 import {styles} from './styles';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationProps} from '../../navigation/types';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  cartProductsFromState,
+  cartTotalFromState,
+  removeCart,
+} from '../../state/slices/cart/cartSlice';
+import {touchSlope} from '../../constants/constants';
 
 const CartWrapper: React.FC<ICartWrapperProps> = ({children}) => {
   const navigation = useNavigation<NavigationProps>();
-
+  const dispatch = useDispatch();
+  const cartProducts = useSelector(cartProductsFromState);
+  const cartTotal = useSelector(cartTotalFromState);
   const navigateToCheckout = useCallback(() => {
     navigation.navigate('checkout');
   }, []);
 
+  const removeCartHandler = () => {
+    dispatch(removeCart());
+  };
+
   return (
     <View style={styles.mainView}>
       {children}
-      <View style={styles.cartContainer}>
-        <View style={styles.flex}>
-          <Text style={styles.priceTitle}>Total Price:</Text>
-          <Text style={styles.amount}>₹35</Text>
+      {cartProducts.length > 0 && (
+        <View style={styles.cartContainer}>
+          <View style={styles.flex}>
+            <Text style={styles.priceTitle}>Total Price:</Text>
+            <Text style={styles.amount}>{`₹ ${cartTotal}`}</Text>
+          </View>
+          <View style={styles.flex}>
+            <Button onPress={navigateToCheckout} title={STRINGS.checkout} />
+            <TouchableOpacity
+              onPress={removeCartHandler}
+              hitSlop={touchSlope}
+              style={styles.bin}>
+              <Image source={ICONS.ic_bin} />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.flex}>
-          <Button onPress={navigateToCheckout} title={STRINGS.checkout} />
-          <TouchableOpacity
-            hitSlop={{
-              left: 20,
-              top: 20,
-            }}
-            style={styles.bin}>
-            <Image source={ICONS.ic_bin} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      )}
     </View>
   );
 };

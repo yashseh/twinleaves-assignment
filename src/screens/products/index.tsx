@@ -1,4 +1,13 @@
-import {View, Text, FlatList, RefreshControl} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Alert,
+  BackHandler,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {styles} from './styles';
 import {useSelector} from 'react-redux';
@@ -18,6 +27,14 @@ import ProductLoadingCard from './views/productLoadingCard';
 import {productsMockData} from './types';
 import {STRINGS} from '../../utils/strings';
 import CartWrapper from '../../wrappers/cartWrapper';
+import {Header} from 'react-native/Libraries/NewAppScreen';
+import ProductsHeader from './views/header';
+import {
+  Camera,
+  useCameraDevice,
+  useCameraPermission,
+  useCodeScanner,
+} from 'react-native-vision-camera';
 
 const Products = () => {
   const navigation = useNavigation<NavigationProps>();
@@ -26,8 +43,11 @@ const Products = () => {
   const totalPages = useSelector(productsTotalPages);
   const productsError = useSelector(productsErrorFromState);
   const [currentPageCount, updateCurrentPageCount] = useState(1);
+  const {hasPermission} = useCameraPermission();
   const [loading, updateIsLoading] = useState(true);
   const [isRefreshing, updateIsRefreshing] = useState(false);
+  const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
+  const [isCameraActive, updateIsCameraActive] = useState(false);
 
   // api call to get products
   useEffect(() => {
@@ -42,6 +62,7 @@ const Products = () => {
     fetch();
   }, [currentPageCount, isRefreshing, dispatch]);
 
+  // to hide the refresher after pull to refresh
   useEffect(() => {
     if (isRefreshing) {
       updateIsRefreshing(false);
@@ -106,13 +127,90 @@ const Products = () => {
     );
   };
 
+  //bar code scanner component
+  const BarCodeScannerRender = () => {
+    const device = useCameraDevice('back');
+    const codeScanner = useCodeScanner({
+      codeTypes: [
+        'code-128',
+        'code-39',
+        'code-93',
+        'codabar',
+        'ean-13',
+        'ean-8',
+        'itf',
+        'upc-e',
+        'upc-a',
+        'qr',
+        'pdf-417',
+        'aztec',
+        'data-matrix',
+      ],
+      onCodeScanned: codes => {
+        closeCamera();
+        setTimeout(() => {
+          navigation.navigate('productDetails', {
+            gtin: Number(codes[0].value),
+          });
+        }, 1000);
+      },
+    });
+
+    if (device == null) return;
+    return (
+      <View style={StyleSheet.absoluteFill}>
+        <Camera
+          style={StyleSheet.absoluteFill}
+          codeScanner={codeScanner}
+          device={device}
+          isActive={isCameraActive}
+        />
+        {/* Back Button */}
+        <TouchableOpacity style={styles.backButton} onPress={closeCamera}>
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // to close the camera
+  const closeCamera = () => {
+    updateIsCameraActive(false);
+    setShowBarcodeScanner(false);
+  };
+
+  // backButton press handler when camera is on
+  useEffect(() => {
+    const backAction = () => {
+      closeCamera();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  //barcode button press handler
+  const barcodePressHandler = () => {
+    if (hasPermission) {
+      setShowBarcodeScanner(true);
+      updateIsCameraActive(true);
+    }
+  };
+
   return (
     <CartWrapper>
+      <ProductsHeader barcodePressHandler={barcodePressHandler} />
       <View style={styles.container}>
         <FlashList
           keyExtractor={(_, index) => `${index}${_.gtin}`}
           numColumns={2}
           estimatedItemSize={213}
+          getItemType={item => `${item.gtin}`}
           onEndReached={incrementPage}
           ItemSeparatorComponent={itemSeparatorComponent}
           showsVerticalScrollIndicator={false}
@@ -128,6 +226,7 @@ const Products = () => {
           renderItem={renderItem}
         />
       </View>
+      {showBarcodeScanner && <BarCodeScannerRender />}
     </CartWrapper>
   );
 };

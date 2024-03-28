@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: colors.primary,
+    paddingTop: 20,
     paddingHorizontal: 20,
   },
   cardContainer: {flex: 1, marginHorizontal: 5},
@@ -15,6 +16,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: deviceHeight * 0.85,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 20,
+    zIndex: 1,
+    left: 20,
+    padding: 10,
+    borderRadius: 5,
+  },
+  backButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
   errorMessage: {
     fontSize: 18,

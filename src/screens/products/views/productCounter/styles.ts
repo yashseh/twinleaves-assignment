@@ -14,9 +14,9 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
-  quantityContainer: {flexDirection: 'row', justifyContent: 'space-around'},
-  icon: {
-    width: 20,
-    height: 20,
+  quantityContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

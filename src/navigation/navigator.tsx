@@ -21,8 +21,7 @@ const Navigator = () => {
       />
       <Stack.Screen
         options={{
-          headerBackVisible: false,
-          title: 'Products',
+          headerShown: false,
         }}
         name={routNames.products}
         component={Products}

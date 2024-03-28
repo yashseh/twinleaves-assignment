@@ -11,4 +11,6 @@ export const STRINGS = {
   unable_to_find_the_product: 'Unable to find the product',
   description: 'Description',
   checkout: 'Checkout',
+  cart_empty: 'Cart is empty',
+  welcome: 'Welcome',
 };

@@ -12,6 +12,10 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#23212E',
   },
+  flex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   amount: {
     color: 'black',
     fontSize: 16,
@@ -20,11 +24,13 @@ export const styles = StyleSheet.create({
   },
   mainContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   productInfo: {
     marginLeft: 10,
-    flex: 1,
+    // flex: 1,
+    width: '50%',
     justifyContent: 'space-between',
   },
 });

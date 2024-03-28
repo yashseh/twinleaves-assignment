@@ -1,23 +1,55 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ICONS} from '../../../../assets/iconExpoter';
 import {colors} from '../../../../assets/themes';
 import {STRINGS} from '../../../../utils/strings';
 import {styles} from './styles';
+import {ICounterButtonDetailProps} from './types';
+import {getProductCount} from '../../../products/views/productCounter/types';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  addProductToCart,
+  removeProductFromCart,
+  cartProductsFromState,
+} from '../../../../state/slices/cart/cartSlice';
 
-const CounterButtonDetail = () => {
+const CounterButtonDetail: React.FC<ICounterButtonDetailProps> = ({
+  product,
+}) => {
+  const cartProducts = useSelector(cartProductsFromState);
+  const dispatch = useDispatch();
+  const getInitialQuantity = getProductCount(cartProducts, product);
+  const [productCount, setProductCount] = useState(getInitialQuantity);
+
+  useEffect(() => {
+    setProductCount(getInitialQuantity);
+  }, [cartProducts]);
+
+  const addProduct = () => {
+    setProductCount(prevCount => prevCount + 1);
+    dispatch(addProductToCart({...product, quantity: productCount + 1}));
+  };
+
+  const removeProduct = () => {
+    if (productCount > 0) {
+      setProductCount(prevCount => prevCount - 1);
+      dispatch(removeProductFromCart({...product, quantity: productCount - 1}));
+    }
+  };
+
   return (
     <View style={styles.counterContainer}>
-      <Pressable>
-        <Text style={styles.counterTitle}>{STRINGS.add}</Text>
-      </Pressable>
-      {false && (
+      {!productCount ? (
+        <Pressable onPress={addProduct}>
+          <Text style={styles.counterTitle}>{STRINGS.add}</Text>
+        </Pressable>
+      ) : (
         <View style={styles.quantityContainer}>
-          <Pressable>
+          <Pressable onPress={removeProduct}>
             <Image source={ICONS.ic_minus} />
           </Pressable>
-          <Text style={styles.counterTitle}>1</Text>
-          <Pressable>
+          <Text style={styles.counterTitle}>{productCount}</Text>
+          <Pressable onPress={addProduct}>
             <Image source={ICONS.ic_plus} />
           </Pressable>
         </View>

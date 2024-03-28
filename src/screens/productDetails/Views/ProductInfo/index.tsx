@@ -25,10 +25,12 @@ const ProductInfo: React.FC<IProductInfoProps> = ({product}) => {
           <Text style={styles.quantityText}>{quantity}</Text>
         </View>
       )}
-      <View style={styles.bottomContainer}>
-        <Text style={styles.mrp}>{productMrp}</Text>
-        <CounterButtonDetail />
-      </View>
+      {product && (
+        <View style={styles.bottomContainer}>
+          <Text style={styles.mrp}>{productMrp}</Text>
+          <CounterButtonDetail product={product} />
+        </View>
+      )}
     </View>
   );
 };

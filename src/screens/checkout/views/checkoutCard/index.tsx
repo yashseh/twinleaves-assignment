@@ -13,24 +13,26 @@ const CheckoutProductCard: React.FC<ICheckoutProductCard> = ({product}) => {
   const productMrp = `₹ ${product?.mrp?.mrp ?? 0}`;
   return (
     <View style={styles.mainContainer}>
-      <Image
-        source={ICONS.ic_dummy}
-        resizeMode="contain"
-        style={styles.productImage}
-      />
-      <View style={styles.productInfo}>
-        <Text numberOfLines={1} style={styles.brandName}>
-          {companyName}
-        </Text>
-        <Text
-          numberOfLines={2}
-          ellipsizeMode="tail"
-          style={styles.productDescription}>
-          {title}
-        </Text>
-        <Text style={styles.amount}>{productMrp}</Text>
+      <View style={styles.flex}>
+        <Image
+          source={ICONS.ic_dummy}
+          resizeMode="contain"
+          style={styles.productImage}
+        />
+        <View style={styles.productInfo}>
+          <Text numberOfLines={1} style={styles.brandName}>
+            {companyName}
+          </Text>
+          <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            style={styles.productDescription}>
+            {title}
+          </Text>
+          <Text style={styles.amount}>{productMrp}</Text>
+        </View>
       </View>
-      <CounterButtonDetail />
+      <CounterButtonDetail product={product} />
     </View>
   );
 };
