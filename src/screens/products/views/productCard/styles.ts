@@ -3,7 +3,6 @@ import {colors} from '../../../../assets/themes';
 
 export const styles = StyleSheet.create({
   cardContainer: {
-    flex: 1,
     height: 233,
     justifyContent: 'space-between',
     backgroundColor: colors.card_grey,
@@ -24,11 +23,13 @@ export const styles = StyleSheet.create({
   },
   productDescription: {
     fontSize: 12,
+    height: 30,
     marginTop: 5,
     fontWeight: '600',
     color: '#23212E',
   },
   amount: {
+    color: 'black',
     marginTop: 5,
     fontWeight: '700',
   },

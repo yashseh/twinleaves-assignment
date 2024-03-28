@@ -30,9 +30,9 @@ const Navigator = () => {
         options={{
           title: 'Product Details',
         }}
-        name={routNames.productDetails}
-        component={ProductDetails}
-      />
+        name={routNames.productDetails}>
+        {props => <ProductDetails {...props} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

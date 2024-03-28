@@ -1,4 +1,4 @@
-import {Pressable, Text, View} from 'react-native';
+import {Image, Pressable, Text, View} from 'react-native';
 import React from 'react';
 import CustomImageComponent from '../../../../components/CustomImageComponent';
 import {ICONS} from '../../../../assets/iconExpoter';
@@ -15,11 +15,16 @@ const ProductCard: React.FC<IProductCardPros> = ({product, onCardPress}) => {
 
   return (
     <Pressable onPress={onCardPress} style={styles.cardContainer}>
-      <CustomImageComponent
+      {/* <CustomImageComponent
         defaultSource={ICONS.ic_dummy}
         imageSource={productImage}
         resizeMode="contain"
         customStyle={styles.productImage}
+      /> */}
+      <Image
+        source={ICONS.ic_dummy}
+        resizeMode="contain"
+        style={styles.productImage}
       />
       <View style={styles.spacer}>
         <Text numberOfLines={1} style={styles.brandName}>

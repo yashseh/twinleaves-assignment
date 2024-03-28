@@ -18,12 +18,13 @@ export interface IProduct {
     | undefined;
   images: IProductImages | null | undefined;
   weights_and_measures: IProductWeightAndMeasures;
+  description: string | null | undefined;
   mrp: {mrp: number | null | undefined} | null | undefined;
 }
 
 export type IProductWeightAndMeasures = {
   measurement_unit: string | null | undefined;
-  gross_weight: string | null | undefined;
+  gross_weight: number | null | undefined;
 };
 
 export type IProductImages = {
@@ -48,7 +49,7 @@ export type IFetchProductsApiResponse = {
 export type IFetchProductsApiBody = {
   page: number;
   pageSize: 10;
-  sort: {
+  sort?: {
     creationDateSortOption: 'DESC';
   };
 };

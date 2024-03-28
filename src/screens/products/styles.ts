@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     paddingHorizontal: 20,
   },
-  cardContainer: {flex: 1, margin: 5},
+  cardContainer: {flex: 1, marginHorizontal: 5},
   emptyContainer: {
     position: 'absolute',
     width: '100%',
@@ -19,5 +19,8 @@ export const styles = StyleSheet.create({
   errorMessage: {
     fontSize: 18,
     textAlign: 'center',
+  },
+  separator: {
+    height: 30,
   },
 });

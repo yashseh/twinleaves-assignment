@@ -17,6 +17,7 @@ import {IProduct} from '../../state/slices/products/types';
 import ProductLoadingCard from './views/productLoadingCard';
 import {productsMockData} from './types';
 import {STRINGS} from '../../utils/strings';
+import CartWrapper from '../../wrappers/cartWrapper';
 
 const Products = () => {
   const navigation = useNavigation<NavigationProps>();
@@ -48,20 +49,27 @@ const Products = () => {
   }, [products, isRefreshing]);
 
   // on card is pressed
-  const cardPressExecutor = () => {
-    navigation.navigate('productDetails');
+  const cardPressExecutor = (item: IProduct) => {
+    navigation.navigate('productDetails', {
+      product: item,
+    });
   };
+
+  // to give vertical spacing between items
+  const itemSeparatorComponent = useCallback(() => {
+    return <View style={styles.separator} />;
+  }, []);
 
   // list render item
   const renderItem = useCallback(
     ({item, index}: {item: IProduct; index: number}) => {
       return (
-        <View key={index} style={styles.cardContainer}>
+        <View style={styles.cardContainer}>
           {loading && <ProductLoadingCard />}
           {!loading && (
             <ProductCard
               product={item}
-              onCardPress={() => cardPressExecutor()}
+              onCardPress={() => cardPressExecutor(item)}
             />
           )}
         </View>
@@ -99,25 +107,28 @@ const Products = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <FlashList
-        keyExtractor={(_, index) => `${index}${_.gtin}`}
-        numColumns={2}
-        estimatedItemSize={213}
-        onEndReached={incrementPage}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={listEmptyComponent}
-        data={loading ? productsMockData : products}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefreshing ?? false}
-            onRefresh={refreshProducts}
-          />
-        }
-        onEndReachedThreshold={0.2}
-        renderItem={renderItem}
-      />
-    </View>
+    <CartWrapper>
+      <View style={styles.container}>
+        <FlashList
+          keyExtractor={(_, index) => `${index}${_.gtin}`}
+          numColumns={2}
+          estimatedItemSize={213}
+          onEndReached={incrementPage}
+          ItemSeparatorComponent={itemSeparatorComponent}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={listEmptyComponent}
+          data={loading ? productsMockData : products}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing ?? false}
+              onRefresh={refreshProducts}
+            />
+          }
+          onEndReachedThreshold={0.2}
+          renderItem={renderItem}
+        />
+      </View>
+    </CartWrapper>
   );
 };
 

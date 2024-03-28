@@ -1,10 +1,14 @@
 import {NavigationProp} from '@react-navigation/native';
+import {IProduct} from '../state/slices/products/types';
 
 //type of params which are required by the screen;
 export type RootStackParamList = {
   login: undefined;
   products: undefined;
-  productDetails: undefined;
+  productDetails: {
+    gtin?: number;
+    product?: IProduct;
+  };
   splash: undefined;
 };
 
