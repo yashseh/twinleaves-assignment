@@ -19,9 +19,9 @@ export const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 20,
+    top: 10,
     zIndex: 1,
-    left: 20,
+    left: 10,
     padding: 10,
     borderRadius: 5,
   },
@@ -35,5 +35,8 @@ export const styles = StyleSheet.create({
   },
   separator: {
     height: 30,
+  },
+  bottomSpace: {
+    height: 70,
   },
 });

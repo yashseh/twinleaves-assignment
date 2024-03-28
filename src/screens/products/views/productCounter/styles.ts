@@ -19,4 +19,5 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  plusIcon: {width: 15, height: 15},
 });

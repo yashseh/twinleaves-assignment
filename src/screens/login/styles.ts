@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
   loginText: {
     fontSize: 20,
     lineHeight: 26,
+    color: colors.navy_blue,
     marginLeft: 10,
     fontWeight: 'bold',
   },

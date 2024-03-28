@@ -1,4 +1,4 @@
-import {ScrollView, Text, View} from 'react-native';
+import {Alert, Image, ScrollView, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ProductInfo from './Views/productInfo';
 import ProductDescription from './Views/productDescription';
@@ -9,19 +9,17 @@ import {useSelector} from 'react-redux';
 import {productsFromState} from '../../state/slices/products/productsSlice';
 import {STRINGS} from '../../utils/strings';
 import CartWrapper from '../../wrappers/cartWrapper';
+import {ICONS} from '../../assets/iconExpoter';
+import {colors} from '../../assets/themes';
 
 const ProductDetails: React.FC<IProductDetailsParams> = ({route}) => {
   const [product, setProduct] = useState<IProduct | null>(null);
-  const [errorMessage, updateErrorMessage] = useState<string | null>(null);
+  const [errorMessage, updateErrorMessage] = useState<string>('');
   const fetchedProducts = useSelector(productsFromState);
 
   useEffect(() => {
     getCurrentProduct();
   }, [route]);
-
-  console.log('====================================');
-  console.log(route.params.product?.gtin);
-  console.log('====================================');
 
   /**
    * getCurrentProduct - Function to retrieve the product data based on the route parameters.
@@ -32,11 +30,11 @@ const ProductDetails: React.FC<IProductDetailsParams> = ({route}) => {
    * If neither a product nor a GTIN is provided in the route params, it sets a generic error message.
    */
   const getCurrentProduct = () => {
-    if (route.params.product) {
+    if (route?.params?.product) {
       setProduct(route.params.product);
-    } else if (route.params.gtin) {
+    } else if (route.params?.gtin) {
       const item = fetchedProducts.find(
-        element => element.gtin === route.params.gtin,
+        element => element.gtin?.toString() === route.params.gtin?.toString(),
       );
       if (item) {
         setProduct(item);
@@ -58,6 +56,13 @@ const ProductDetails: React.FC<IProductDetailsParams> = ({route}) => {
       {!errorMessage && (
         <View style={styles.mainContainer}>
           <ScrollView>
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                resizeMode="contain"
+                source={ICONS.ic_front}
+              />
+            </View>
             <ProductInfo product={product} />
             <View style={styles.spacer} />
             <ProductDescription description={product?.description} />

@@ -6,6 +6,7 @@ import {capitalizeFirstLetter} from '../../../../utils/utils';
 import ProductCounter from '../productCounter';
 import {styles} from './styles';
 import {IProductCardPros} from './types';
+import Animated, {FadeInDown, FadeInUp} from 'react-native-reanimated';
 
 const ProductCard: React.FC<IProductCardPros> = ({product, onCardPress}) => {
   const title = capitalizeFirstLetter(product?.name ?? '');
@@ -14,7 +15,7 @@ const ProductCard: React.FC<IProductCardPros> = ({product, onCardPress}) => {
   const productMrp = `₹ ${product?.mrp?.mrp ?? 0}`;
 
   return (
-    <View style={styles.cardContainer}>
+    <Animated.View entering={FadeInDown} style={styles.cardContainer}>
       {/* <CustomImageComponent
         defaultSource={ICONS.ic_dummy}
         imageSource={productImage}
@@ -41,7 +42,7 @@ const ProductCard: React.FC<IProductCardPros> = ({product, onCardPress}) => {
         </View>
       </Pressable>
       <ProductCounter product={product} />
-    </View>
+    </Animated.View>
   );
 };
 

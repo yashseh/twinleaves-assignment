@@ -1,12 +1,10 @@
 import {
   View,
   Text,
-  FlatList,
   RefreshControl,
-  StyleSheet,
   Alert,
   BackHandler,
-  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {styles} from './styles';
@@ -27,14 +25,10 @@ import ProductLoadingCard from './views/productLoadingCard';
 import {productsMockData} from './types';
 import {STRINGS} from '../../utils/strings';
 import CartWrapper from '../../wrappers/cartWrapper';
-import {Header} from 'react-native/Libraries/NewAppScreen';
 import ProductsHeader from './views/header';
-import {
-  Camera,
-  useCameraDevice,
-  useCameraPermission,
-  useCodeScanner,
-} from 'react-native-vision-camera';
+import {useCameraPermission} from 'react-native-vision-camera';
+import {colors} from '../../assets/themes';
+import BrCodeScanner from './views/brcodescanner';
 
 const Products = () => {
   const navigation = useNavigation<NavigationProps>();
@@ -43,7 +37,7 @@ const Products = () => {
   const totalPages = useSelector(productsTotalPages);
   const productsError = useSelector(productsErrorFromState);
   const [currentPageCount, updateCurrentPageCount] = useState(1);
-  const {hasPermission} = useCameraPermission();
+  const {hasPermission, requestPermission} = useCameraPermission();
   const [loading, updateIsLoading] = useState(true);
   const [isRefreshing, updateIsRefreshing] = useState(false);
   const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
@@ -75,6 +69,23 @@ const Products = () => {
       product: item,
     });
   };
+
+  // backButton press handler when camera is on
+  useEffect(() => {
+    const backAction = () => {
+      closeCamera();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  //flashlist component --------------------------------->
 
   // to give vertical spacing between items
   const itemSeparatorComponent = useCallback(() => {
@@ -108,6 +119,7 @@ const Products = () => {
 
   // pull to refresh handler
   const refreshProducts = () => {
+    updateIsLoading(true);
     updateIsRefreshing(true);
     updateCurrentPageCount(1);
   };
@@ -127,51 +139,20 @@ const Products = () => {
     );
   };
 
-  //bar code scanner component
-  const BarCodeScannerRender = () => {
-    const device = useCameraDevice('back');
-    const codeScanner = useCodeScanner({
-      codeTypes: [
-        'code-128',
-        'code-39',
-        'code-93',
-        'codabar',
-        'ean-13',
-        'ean-8',
-        'itf',
-        'upc-e',
-        'upc-a',
-        'qr',
-        'pdf-417',
-        'aztec',
-        'data-matrix',
-      ],
-      onCodeScanned: codes => {
-        closeCamera();
-        setTimeout(() => {
-          navigation.navigate('productDetails', {
-            gtin: Number(codes[0].value),
-          });
-        }, 1000);
-      },
-    });
-
-    if (device == null) return;
+  //list footer compontent
+  const renderFooter = useCallback(() => {
     return (
-      <View style={StyleSheet.absoluteFill}>
-        <Camera
-          style={StyleSheet.absoluteFill}
-          codeScanner={codeScanner}
-          device={device}
-          isActive={isCameraActive}
-        />
-        {/* Back Button */}
-        <TouchableOpacity style={styles.backButton} onPress={closeCamera}>
-          <Text style={styles.backButtonText}>Back</Text>
-        </TouchableOpacity>
+      <View>
+        {currentPageCount < totalPages ? (
+          <ActivityIndicator color={colors.navy_blue} size={'large'} />
+        ) : (
+          <View style={styles.bottomSpace} />
+        )}
       </View>
     );
-  };
+  }, [currentPageCount]);
+
+  //-------------------------XX------------------------>
 
   // to close the camera
   const closeCamera = () => {
@@ -179,26 +160,18 @@ const Products = () => {
     setShowBarcodeScanner(false);
   };
 
-  // backButton press handler when camera is on
-  useEffect(() => {
-    const backAction = () => {
-      closeCamera();
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    return () => backHandler.remove();
-  }, []);
-
-  //barcode button press handler
-  const barcodePressHandler = () => {
+  //barcode icon button press handler
+  const barcodePressHandler = async () => {
     if (hasPermission) {
       setShowBarcodeScanner(true);
       updateIsCameraActive(true);
+    } else {
+      const request = await requestPermission();
+      if (!request) {
+        Alert.alert(
+          'Please allow camera access from settings in order to user feature',
+        );
+      }
     }
   };
 
@@ -222,11 +195,17 @@ const Products = () => {
               onRefresh={refreshProducts}
             />
           }
-          onEndReachedThreshold={0.2}
+          onEndReachedThreshold={1}
+          ListFooterComponent={renderFooter}
           renderItem={renderItem}
         />
       </View>
-      {showBarcodeScanner && <BarCodeScannerRender />}
+      {showBarcodeScanner && (
+        <BrCodeScanner
+          closeCameraPopup={closeCamera}
+          isActive={isCameraActive}
+        />
+      )}
     </CartWrapper>
   );
 };

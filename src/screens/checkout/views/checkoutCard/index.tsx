@@ -5,6 +5,12 @@ import {styles} from './styles';
 import CounterButtonDetail from '../../../productDetails/Views/counterButtonDetail';
 import {ICheckoutProductCard} from './types';
 import {capitalizeFirstLetter} from '../../../../utils/utils';
+import Animated, {
+  BounceIn,
+  BounceOutRight,
+  FlipInEasyX,
+  FlipOutEasyX,
+} from 'react-native-reanimated';
 
 const CheckoutProductCard: React.FC<ICheckoutProductCard> = ({product}) => {
   const title = capitalizeFirstLetter(product?.name ?? '');
@@ -12,7 +18,7 @@ const CheckoutProductCard: React.FC<ICheckoutProductCard> = ({product}) => {
   //   const productImage = product.images?.front ?? null;
   const productMrp = `₹ ${product?.mrp?.mrp ?? 0}`;
   return (
-    <View style={styles.mainContainer}>
+    <Animated.View entering={FlipInEasyX} style={styles.mainContainer}>
       <View style={styles.flex}>
         <Image
           source={ICONS.ic_dummy}
@@ -33,7 +39,7 @@ const CheckoutProductCard: React.FC<ICheckoutProductCard> = ({product}) => {
         </View>
       </View>
       <CounterButtonDetail product={product} />
-    </View>
+    </Animated.View>
   );
 };
 

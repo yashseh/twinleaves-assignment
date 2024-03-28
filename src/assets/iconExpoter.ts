@@ -7,4 +7,5 @@ export const ICONS = {
   ic_barcode: require('./icons/barcode.png'),
   ic_logout: require('./icons/logout.png'),
   ic_noProfile: require('./icons/ic_no_profile.png'),
+  ic_front: require('./icons/front.jpg'),
 };

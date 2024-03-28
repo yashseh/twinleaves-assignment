@@ -14,4 +14,5 @@ export const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   quantityContainer: {flexDirection: 'row', alignItems: 'center'},
+  plusIcon: {width: 15, height: 15},
 });

@@ -1,5 +1,6 @@
 import {
   Button,
+  Easing,
   Image,
   StyleSheet,
   Text,
@@ -21,6 +22,12 @@ import {
   removeCart,
 } from '../../state/slices/cart/cartSlice';
 import {touchSlope} from '../../constants/constants';
+import {AnimatedView} from 'react-native-reanimated/lib/typescript/reanimated2/component/View';
+import Animated, {
+  FadeInDown,
+  FadeInUp,
+  FadeOutDown,
+} from 'react-native-reanimated';
 
 const CartWrapper: React.FC<ICartWrapperProps> = ({children}) => {
   const navigation = useNavigation<NavigationProps>();
@@ -39,10 +46,13 @@ const CartWrapper: React.FC<ICartWrapperProps> = ({children}) => {
     <View style={styles.mainView}>
       {children}
       {cartProducts.length > 0 && (
-        <View style={styles.cartContainer}>
+        <Animated.View
+          entering={FadeInDown}
+          exiting={FadeOutDown}
+          style={styles.cartContainer}>
           <View style={styles.flex}>
             <Text style={styles.priceTitle}>Total Price:</Text>
-            <Text style={styles.amount}>{`₹ ${cartTotal}`}</Text>
+            <Text style={styles.amount}>{` ₹${cartTotal}`}</Text>
           </View>
           <View style={styles.flex}>
             <Button onPress={navigateToCheckout} title={STRINGS.checkout} />
@@ -53,7 +63,7 @@ const CartWrapper: React.FC<ICartWrapperProps> = ({children}) => {
               <Image source={ICONS.ic_bin} />
             </TouchableOpacity>
           </View>
-        </View>
+        </Animated.View>
       )}
     </View>
   );

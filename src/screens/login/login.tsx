@@ -23,7 +23,10 @@ const Login = () => {
       const googleLoginResponse = await googleSignInHandler();
       if (googleLoginResponse.token) {
         dispatch(updateUserDetails(googleLoginResponse));
-        navigation.navigate('products');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'products'}],
+        });
       }
     } catch (error) {
       console.log(error);

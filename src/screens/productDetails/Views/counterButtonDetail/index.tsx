@@ -12,6 +12,7 @@ import {
   removeProductFromCart,
   cartProductsFromState,
 } from '../../../../state/slices/cart/cartSlice';
+import {touchSlope} from '../../../../constants/constants';
 
 const CounterButtonDetail: React.FC<ICounterButtonDetailProps> = ({
   product,
@@ -40,17 +41,17 @@ const CounterButtonDetail: React.FC<ICounterButtonDetailProps> = ({
   return (
     <View style={styles.counterContainer}>
       {!productCount ? (
-        <Pressable onPress={addProduct}>
+        <Pressable hitSlop={touchSlope} onPress={addProduct}>
           <Text style={styles.counterTitle}>{STRINGS.add}</Text>
         </Pressable>
       ) : (
         <View style={styles.quantityContainer}>
-          <Pressable onPress={removeProduct}>
+          <Pressable hitSlop={touchSlope} onPress={removeProduct}>
             <Image source={ICONS.ic_minus} />
           </Pressable>
           <Text style={styles.counterTitle}>{productCount}</Text>
-          <Pressable onPress={addProduct}>
-            <Image source={ICONS.ic_plus} />
+          <Pressable hitSlop={touchSlope} onPress={addProduct}>
+            <Image style={styles.plusIcon} source={ICONS.ic_plus} />
           </Pressable>
         </View>
       )}

@@ -5,12 +5,14 @@ import Login from '../screens/login/login';
 import Products from '../screens/products';
 import ProductDetails from '../screens/productDetails';
 import Checkout from '../screens/checkout';
+import Splash from '../screens/splash';
 const Navigator = () => {
   //navigation Stack
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
+  //TODO: for now i have passed routes configuration here due to time shortage
   return (
-    <Stack.Navigator initialRouteName={routNames.products}>
+    <Stack.Navigator initialRouteName={routNames.splash}>
       <Stack.Screen
         options={{
           headerBackVisible: false,
@@ -32,6 +34,13 @@ const Navigator = () => {
         }}
         name={routNames.checkout}
         component={Checkout}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        component={Splash}
+        name={routNames.splash}
       />
       <Stack.Screen
         options={{

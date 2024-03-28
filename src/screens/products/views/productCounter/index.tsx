@@ -42,12 +42,16 @@ const ProductCounter: React.FC<IProductCounterProps> = ({product}) => {
         </Pressable>
       ) : (
         <View style={styles.quantityContainer}>
-          <Pressable onPress={removeProduct}>
+          <Pressable hitSlop={touchSlope} onPress={removeProduct}>
             <Image source={ICONS.ic_minus} />
           </Pressable>
           <Text style={styles.counterTitle}>{productCount}</Text>
           <Pressable hitSlop={touchSlope} onPress={addProduct}>
-            <Image source={ICONS.ic_plus} />
+            <Image
+              style={styles.plusIcon}
+              resizeMode="contain"
+              source={ICONS.ic_plus}
+            />
           </Pressable>
         </View>
       )}

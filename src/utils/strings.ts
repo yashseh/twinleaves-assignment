@@ -13,4 +13,6 @@ export const STRINGS = {
   checkout: 'Checkout',
   cart_empty: 'Cart is empty',
   welcome: 'Welcome',
+  assignment: 'ASSIGNMENT',
+  back: 'back',
 };
