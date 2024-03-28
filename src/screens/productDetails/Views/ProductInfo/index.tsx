@@ -1,21 +1,21 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {colors} from '../../assets/themes';
-import ProductInfo from './Views/ProductInfo';
+import {colors} from '../../../../assets/themes';
 
-const ProductDetails = () => {
+const ProductInfo = () => {
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.card_grey,
+        borderRadius: 16,
         padding: 20,
       }}>
-      <ProductInfo />
+      <Text>ProductInfo</Text>
     </View>
   );
 };
 
-export default ProductDetails;
+export default ProductInfo;
 
 const styles = StyleSheet.create({});

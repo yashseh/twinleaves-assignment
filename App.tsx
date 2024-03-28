@@ -7,6 +7,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Navigator from './src/navigation/navigator';
 import {NavigationContainer} from '@react-navigation/native';
 import store from './src/state/store';
+import LoaderWrapper from './src/wrappers/loaderWrapper';
 
 const App = () => {
   //Google SignIn Configuration
@@ -18,9 +19,11 @@ const App = () => {
   return (
     <Provider store={store.store}>
       <PersistGate loading={null} persistor={store.persistor}>
-        <NavigationContainer>
-          <Navigator />
-        </NavigationContainer>
+        <LoaderWrapper>
+          <NavigationContainer>
+            <Navigator />
+          </NavigationContainer>
+        </LoaderWrapper>
       </PersistGate>
     </Provider>
   );

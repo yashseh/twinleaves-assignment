@@ -1,30 +1,34 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import {googleSignInHandler} from '../../utils/gooleSignIn';
 import {ICONS} from '../../assets/iconExpoter';
 import {STRINGS} from '../../utils/strings';
 import {useDispatch} from 'react-redux';
 import {updateUserDetails} from '../../state/slices/user/userSlice';
+import {displayLoader} from '../../state/slices/global/globalSlice';
+import {useNavigation} from '@react-navigation/native';
+import {NavigationProps} from '../../navigation/types';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [isLoading, updateIsLoading] = useState(false);
+  const navigation = useNavigation<NavigationProps>();
 
   /**
  sign-in by google Handler
    */
   const signInHandler = async () => {
     try {
-      updateIsLoading(true);
+      dispatch(displayLoader(true));
       const googleLoginResponse = await googleSignInHandler();
       if (googleLoginResponse.token) {
         dispatch(updateUserDetails(googleLoginResponse));
+        navigation.navigate('products');
       }
     } catch (error) {
       console.log(error);
     } finally {
-      updateIsLoading(false);
+      dispatch(displayLoader(false));
     }
   };
 
