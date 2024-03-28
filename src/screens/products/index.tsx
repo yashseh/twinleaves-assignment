@@ -29,6 +29,7 @@ import ProductsHeader from './views/header';
 import {useCameraPermission} from 'react-native-vision-camera';
 import {colors} from '../../assets/themes';
 import BrCodeScanner from './views/brcodescanner';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Products = () => {
   const navigation = useNavigation<NavigationProps>();
@@ -42,7 +43,7 @@ const Products = () => {
   const [isRefreshing, updateIsRefreshing] = useState(false);
   const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
   const [isCameraActive, updateIsCameraActive] = useState(false);
-
+  const top = useSafeAreaInsets().top;
   // api call to get products
   useEffect(() => {
     const fetch = async () => {
@@ -177,35 +178,37 @@ const Products = () => {
 
   return (
     <CartWrapper>
-      <ProductsHeader barcodePressHandler={barcodePressHandler} />
-      <View style={styles.container}>
-        <FlashList
-          keyExtractor={(_, index) => `${index}${_.gtin}`}
-          numColumns={2}
-          estimatedItemSize={213}
-          getItemType={item => `${item.gtin}`}
-          onEndReached={incrementPage}
-          ItemSeparatorComponent={itemSeparatorComponent}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={listEmptyComponent}
-          data={loading ? productsMockData : products}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing ?? false}
-              onRefresh={refreshProducts}
-            />
-          }
-          onEndReachedThreshold={1}
-          ListFooterComponent={renderFooter}
-          renderItem={renderItem}
-        />
+      <View style={{paddingTop: top, flex: 1}}>
+        <ProductsHeader barcodePressHandler={barcodePressHandler} />
+        <View style={styles.container}>
+          <FlashList
+            keyExtractor={(_, index) => `${index}${_.gtin}`}
+            numColumns={2}
+            estimatedItemSize={213}
+            getItemType={item => `${item.gtin}`}
+            onEndReached={incrementPage}
+            ItemSeparatorComponent={itemSeparatorComponent}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={listEmptyComponent}
+            data={loading ? productsMockData : products}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing ?? false}
+                onRefresh={refreshProducts}
+              />
+            }
+            onEndReachedThreshold={1}
+            ListFooterComponent={renderFooter}
+            renderItem={renderItem}
+          />
+        </View>
+        {showBarcodeScanner && (
+          <BrCodeScanner
+            closeCameraPopup={closeCamera}
+            isActive={isCameraActive}
+          />
+        )}
       </View>
-      {showBarcodeScanner && (
-        <BrCodeScanner
-          closeCameraPopup={closeCamera}
-          isActive={isCameraActive}
-        />
-      )}
     </CartWrapper>
   );
 };

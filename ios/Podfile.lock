@@ -1154,6 +1154,11 @@ PODS:
   - RNGoogleSignin (11.0.0):
     - GoogleSignIn (~> 7.0)
     - React-Core
+  - RNReanimated (3.8.1):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+    - ReactCommon/turbomodule/core
   - RNScreens (3.30.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1252,6 +1257,7 @@ DEPENDENCIES:
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1385,6 +1391,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@shopify/flash-list"
   RNGoogleSignin:
     :path: "../node_modules/@react-native-google-signin/google-signin"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   VisionCamera:
@@ -1462,6 +1470,7 @@ SPEC CHECKSUMS:
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
   RNGoogleSignin: fc408799f1990a12497a32f64280c0fe353ffcc1
+  RNReanimated: 8a4d86eb951a4a99d8e86266dc71d7735c0c30a9
   RNScreens: b6b64d956af3715adbfe84808694ae82d3fec74f
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d

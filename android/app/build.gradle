@@ -90,6 +90,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+          release {
+            storeFile file('release.keystore')
+            storePassword 'illuminz'
+            keyAlias 'illuminz'
+            keyPassword 'illuminz'
+        }
     }
     buildTypes {
         debug {
