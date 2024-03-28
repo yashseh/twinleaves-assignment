@@ -10,4 +10,5 @@ export const STRINGS = {
   something_went_wrong: 'Something went wrong.Please try again later',
   unable_to_find_the_product: 'Unable to find the product',
   description: 'Description',
+  checkout: 'Checkout',
 };

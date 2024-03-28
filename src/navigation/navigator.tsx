@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from '../screens/login/login';
 import Products from '../screens/products';
 import ProductDetails from '../screens/productDetails';
+import Checkout from '../screens/checkout';
 const Navigator = () => {
   //navigation Stack
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -25,6 +26,13 @@ const Navigator = () => {
         }}
         name={routNames.products}
         component={Products}
+      />
+      <Stack.Screen
+        options={{
+          title: 'Checkout',
+        }}
+        name={routNames.checkout}
+        component={Checkout}
       />
       <Stack.Screen
         options={{
