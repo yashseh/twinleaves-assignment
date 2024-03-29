@@ -71,21 +71,6 @@ const Products = () => {
     });
   };
 
-  // backButton press handler when camera is on
-  useEffect(() => {
-    const backAction = () => {
-      closeCamera();
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    return () => backHandler.remove();
-  }, []);
-
   //flashlist component --------------------------------->
 
   // to give vertical spacing between items
